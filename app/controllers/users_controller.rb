@@ -2,7 +2,7 @@
 
 class UsersController < ApplicationController
   before_action :user, only: %i[update destroy]
-  skip_before_action :verify_authenticity_token
+
   def destroy
     if @record.destroy
       render json: { status: 'Sucesss' }
@@ -13,10 +13,10 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(permitted_params)
-    if user.save!
+    if user.save
       render json: { error: nil }
     else
-      render json: { error: user.errors.messages }
+      render json: { error: user.errors.full_messages, status: 'failed' }
     end
   end
 
@@ -35,6 +35,13 @@ class UsersController < ApplicationController
   def index
     render json: { count: User.count, records: User.all }
   end
+
+  def search
+    records = User.where('LOWER(name) LIKE ?', "%#{params[:name].downcase}%")
+    render json: { data: records }
+  end
+
+  private
 
   def permitted_params
     params.require(:user).permit(:name, :password_digest, :email)

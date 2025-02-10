@@ -36,6 +36,11 @@ class UsersController < ApplicationController
     render json: { count: User.count, records: User.all }
   end
 
+  def search
+    records = User.where('LOWER(name) LIKE ?', "%#{params[:name].downcase}%")
+    render json: { data: records }
+  end
+
   def permitted_params
     params.require(:user).permit(:name, :password_digest, :email)
   end

@@ -3,6 +3,8 @@
 class UsersController < ApplicationController
   before_action :user, only: %i[update destroy]
   skip_before_action :verify_authenticity_token
+  before_action :event_creation
+
   def destroy
     if @record.destroy
       render json: { status: 'Sucesss' }
@@ -39,6 +41,12 @@ class UsersController < ApplicationController
   def search
     records = User.where('LOWER(name) LIKE ?', "%#{params[:name].downcase}%")
     render json: { data: records }
+  end
+
+  private
+
+  def event_creation
+    Event.update_details
   end
 
   def permitted_params

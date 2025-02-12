@@ -11,4 +11,7 @@ Rails.application.routes.draw do
       get 'search', to: 'roles#search'
     end
   end
+
+  resources :events do
+  end
 end

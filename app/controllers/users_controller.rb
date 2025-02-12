@@ -3,7 +3,6 @@
 class UsersController < ApplicationController
   before_action :user, only: %i[update destroy]
   skip_before_action :verify_authenticity_token
-  before_action :event_creation
 
   def destroy
     if @record.destroy
@@ -15,10 +14,10 @@ class UsersController < ApplicationController
 
   def create
     user = User.new(permitted_params)
-    if user.save!
+    if user.save
       render json: { error: nil }
     else
-      render json: { error: user.errors.messages }
+      render json: { error: user.errors.full_messages, status: 'failed' }
     end
   end
 
@@ -44,10 +43,6 @@ class UsersController < ApplicationController
   end
 
   private
-
-  def event_creation
-    Event.update_details
-  end
 
   def permitted_params
     params.require(:user).permit(:name, :password_digest, :email)

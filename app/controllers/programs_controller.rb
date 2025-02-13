@@ -2,11 +2,19 @@
 
 class ProgramsController < ApplicationController
   skip_before_action :verify_authenticity_token
-  before_action :record, only: %i[update destroy]
+  before_action :record, only: %i[update destroy show]
 
   def index
     programs = Program.all.order(id: :asc)
     render json: { records: programs }
+  end
+
+  def show
+    if !@record.nil?
+      render json: { record: @record }
+    else
+      render json: { status: 'Not found' }
+    end
   end
 
   def create

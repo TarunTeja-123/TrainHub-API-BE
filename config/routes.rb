@@ -14,4 +14,5 @@ Rails.application.routes.draw do
 
   resources :events do
   end
+  resources :programs
 end

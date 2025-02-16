@@ -42,6 +42,11 @@ class ProgramsController < ApplicationController
     end
   end
 
+  def active_programs
+    records = Program.active_records
+    render json: { records: records }
+  end
+
   def record
     @record = Program.find_by(id: params[:id])
   end

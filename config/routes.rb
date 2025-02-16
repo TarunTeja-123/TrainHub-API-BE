@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  mount Sidekiq::Web => '/sidekiq' if defined?(Sidekiq::Web)
   resources :users do
     collection do
       get 'search', to: 'users#search'
@@ -14,5 +17,9 @@ Rails.application.routes.draw do
 
   resources :events do
   end
-  resources :programs
+  resources :programs do
+    collection do
+      get 'active_programs', to: 'programs#active_programs'
+    end
+  end
 end

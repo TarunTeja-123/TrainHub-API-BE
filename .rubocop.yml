@@ -4,7 +4,7 @@ AllCops:
     - "bin/*"  # Ignore linting for bin scripts like bin/yarn
     - "node_modules/**/*"
     - "vendor/**/*"
-
+    - db/schema.rb
 Style/Documentation:
   Enabled: false  # Disable top-level class/module documentation warnings
 

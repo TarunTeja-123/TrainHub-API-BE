@@ -11,10 +11,16 @@ class UsersController < ApplicationController
     end
   end
 
+  def trainers
+    records = User.includes(:roles).where(roles: { name: params[:user_role] })
+
+    render json: { status: 'sucess', records: records, count: records.count }
+  end
+
   def create
     user = User.new(permitted_params)
     if user.save
-      render json: { error: nil }
+      render json: { status: 'created', error: nil }
     else
       render json: { error: user.errors.full_messages, status: 'failed' }
     end
@@ -44,6 +50,6 @@ class UsersController < ApplicationController
   private
 
   def permitted_params
-    params.require(:user).permit(:name, :password_digest, :email)
+    params.require(:user).permit(:name, :email, :password)
   end
 end

@@ -7,6 +7,7 @@ Rails.application.routes.draw do
   resources :users do
     collection do
       get 'search', to: 'users#search'
+      get 'trainers', to: 'users#trainers'
     end
   end
   resources :roles do
@@ -15,7 +16,8 @@ Rails.application.routes.draw do
     end
   end
   post 'login', to: 'auth#login'
-
+  resources :slots do
+  end
   resources :events do
   end
   resources :programs do

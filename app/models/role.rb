@@ -2,5 +2,7 @@
 
 class Role < ApplicationRecord
   validates :name, uniqueness: true
-  belongs_to :user
+  has_many :slots
+  has_many :users, through: :slots
+  has_many :programs, through: :slots
 end
